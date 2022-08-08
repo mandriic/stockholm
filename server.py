@@ -12,22 +12,23 @@ import os
 home = os.getenv("HOME")
 root = os.getcwd()
 
-def logging (exception):
+def logging (exception, need_print):
     f = open(root + '/log.txt', 'a')
     date = datetime.now()
     date = str(date)
-    print("log file writing")
+    if need_print == 1:
+        print("Log file writing")
     f.write('\n%s: ' % date)
     f.write(' Error -> %s' % exception)
     f.close()
 
-def ft_server_part():
+def ft_server_part(need_print):
 
     os.chdir(home + "/infection")
     try:
         f = open(".ciperKey3", "rb")
     except Exception as e:
-        logging(e)
+        logging(e, need_print)
         os._exit(os.EX_OK)
     ciphertext = f.read()
     try:
@@ -46,14 +47,16 @@ def ft_server_part():
             )
         )
     except Exception as e:
-        logging(e)
+        logging(e, need_print)
         os._exit(os.EX_OK)
-    print(plaintext)
+    # print(plaintext)
+    key = Fernet(plaintext)
     not_enc_file = open(home + "/infection/.not_encoded.ft", "rb")
-    not_enc_text = not_enc_file.read()
+    not_enc_text = key.decrypt(not_enc_file.read())
     not_enc_file.close()
     os.remove(home + "/infection/.not_encoded.ft")
     not_enc_text = not_enc_text.decode("utf-8")
+    # print(not_enc_text)
     will_rev_infect = list (filter(os.path.isfile, os.listdir(".")))
     for file in will_rev_infect:
         name = file.split(".")
@@ -71,14 +74,14 @@ def ft_server_part():
             encr_file = open(str_name, "rb")
             encr_inf = encr_file.read()
             encr_file.close()
-            key = Fernet(plaintext)
+
             # print(key.decrypt(encr_inf))
             try:
                 encr_file = open (str_name, "wb")
                 encr_file.write(key.decrypt(encr_inf))
                 encr_file.close()
             except Exception as e:
-                logging(e)
+                logging(e, need_print)
     os.remove(home + "/infection/.ciperKey3")
 
 # print (list (filter(os.path.isdir, os.listdir("."))))

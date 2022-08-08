@@ -10,7 +10,7 @@ def show(root):
     pid = os.fork()
     if pid > 0:
         playsound(".src/1.wav")
-        exit()
+        os._exit(os.EX_OK)
     else:
         two = climage.convert('.src/2.jpg', is_256color=True, is_unicode=True)
         three = climage.convert('.src/3.jpg', is_256color=True, is_unicode=True)

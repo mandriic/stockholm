@@ -15,20 +15,19 @@ def revers_infection(rev_arg):
 
 def parsing_args(args):
     need_print = 1
-    if ("-s" in args):
+    if ("-s" in args or "-silent" in args):
         need_print = 0
-        client.ft_client_part()
     if ("-h" in args or "-help" in args) and need_print == 1:
-        print ("Im help")
-        exit
+        print ("Usage: \n./stockholm [-hvrs] -h --help, -v --version, -s --silence, -r --reverse")
+        os._exit(os.EX_OK)
     if ("-v" in args or "-version" in args):
         print("ver 1.0")
-        exit
+        os._exit(os.EX_OK)
     if ("-r" in args or "-reverse" in sys.argv):
         rev_arg = sys.argv.index("-r")
-        server.ft_server_part()
+        server.ft_server_part(need_print)
     else:
-        client.ft_client_part()
+        client.ft_client_part(need_print)
 
 parsing_args(sys.argv)
 
