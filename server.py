@@ -23,9 +23,8 @@ def logging (exception, need_print):
     f.close()
 
 def ft_server_part(need_print):
-
-    os.chdir(home + "/infection")
     try:
+        os.chdir(home + "/infection")
         f = open(".ciperKey3", "rb")
     except Exception as e:
         logging(e, need_print)
